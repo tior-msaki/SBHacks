@@ -1,4 +1,4 @@
-# example.py
+
 from dotenv import load_dotenv
 from elevenlabs.client import ElevenLabs
 from elevenlabs.play import play
@@ -7,64 +7,58 @@ import os
 
 load_dotenv()
 
-#MODEL_VERSION = "eleven_multilingual_ttv_v2"
+MODEL_VERSION = "eleven_multilingual_ttv_v2"
+
+voice_ids = {
+    1: "KnTv6RLzB4khP0x7xem1",
+    2: "WLOYW6YwyA4c6LBQKJ36",
+    3: "l2xKdzGYYWPy0gKbjRXC"
+}
 
 elevenlabs = ElevenLabs(
-  api_key=os.getenv("ELEVENLABS_API_KEY"),
+    api_key=os.getenv("ELEVENLABS_API_KEY"),
 )
 
-# voices = elevenlabs.text_to_voice.design(
-#     model_id="eleven_multilingual_ttv_v2",
-#     voice_description="A middle-aged woman speaking at a quick pace. She has a gentle and soft tone.",
-#     text="Your weapons are but toothpicks to me. Surrender now and I may grant you a swift end. I've toppled kingdoms and devoured armies. What hope do you have against me?",
-# )
-
-#KnTv6RLzB4khP0x7xem1
-
-# voices = elevenlabs.text_to_voice.design(
-#     model_id="eleven_multilingual_ttv_v2",
-#     voice_description="A fresh-graduate out of college who speaks in a deep-voiced, bright tone. He speaks at a medium speed",
-#     text="Your weapons are but toothpicks to me. Surrender now and I may grant you a swift end. I've toppled kingdoms and devoured armies. What hope do you have against me?",
-# )
-
-#WLOYW6YwyA4c6LBQKJ36
-
-voices = elevenlabs.text_to_voice.design(
-    model_id="eleven_multilingual_ttv_v2",
-    voice_description="A woman who works in corporate with a fast, excited tone. She speaks in a decently high pitch",
-    text="Your weapons are but toothpicks to me. Surrender now and I may grant you a swift end. I've toppled kingdoms and devoured armies. What hope do you have against me?",
+voice = elevenlabs.text_to_voice.create(
+    voice_name="Berta",
+    voice_description="Middle-aged black lady",
+    # The generated voice ID of the preview you want to use,
+    # using the first in the list for this example
+    generated_voice_id=voice_ids[1]
 )
 
-#l2xKdzGYYWPy0gKbjRXC
+voice = elevenlabs.text_to_voice.create(
+    voice_name="Andrew",
+    voice_description="New grad male, deep voice.",
+    # The generated voice ID of the preview you want to use,
+    # using the first in the list for this example
+    generated_voice_id=voice_ids[2]
+)
 
-for preview in voices.previews:
-    # Convert base64 to audio buffer
-    audio_buffer = base64.b64decode(preview.audio_base_64)
+voice = elevenlabs.text_to_voice.create(
+    voice_name="Sophia",
+    voice_description="Young, corporate woman",
+    # The generated voice ID of the preview you want to use,
+    # using the first in the list for this example
+    generated_voice_id=voice_ids[3]
+)
 
-    print(f"Playing preview: {preview.generated_voice_id}")
 
-    play(audio_buffer)
+# def generate_speech(text, avatar, model_ver=MODEL_VERSION):
+#     elevenlabs = ElevenLabs(
+#         api_key=os.getenv("ELEVENLABS_API_KEY"),
+#         )
 
-# voice = elevenlabs.text_to_voice.create(
-#     voice_name="Woman in her 50s",
-#     voice_description="A woman in her 50s, who speaks in a high pitched, breathy, shaky tone. She speaks slowly.",
-#     # The generated voice ID of the preview you want to use,
-#     # using the first in the list for this example
-#     generated_voice_id=DVbI3B0eWxuh6I5AXg7w
-# )
+#     client = ElevenLabs()
 
-# voice_ids = {
-#     1: 
+#     audio = client.text_to_speech.convert(
+#         text=f"{text}",
+#         voice_id=f"{voice_ids[avatar]}",
+#         model_id=f"{model_ver}",
+#         output_format="mp3_44100_128",
+#     )
 
-# }
+#     play(audio)
 
-# client = ElevenLabs()
-
-# audio = client.text_to_speech.convert(
-#     text=f"{text}",
-#     voice_id=f"{voice_ids[avatar]}",
-#     model_id=f"{MODEL_VERSION}",
-#     output_format="mp3_44100_128",
-# )
-
-#play(audio)
+# if __name__ == "__main__":
+#     generate_speech("Hello, this is a test of the Eleven Labs text to speech synthesis.", 1)    
