@@ -1,2 +1,0 @@
-# SBHacks
-SBHacks project
