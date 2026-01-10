@@ -30,4 +30,4 @@ def generate_speech(text, avatar, model_ver=MODEL_VERSION):
     play(audio)
 
 if __name__ == "__main__":
-    generate_speech("Hello, this is a test of the Eleven Labs text to speech synthesis.", 1)    
+    generate_speech("Hello, this is a test of the Eleven Labs text to speech synthesis.", 2)    
