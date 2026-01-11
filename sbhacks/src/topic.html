@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        .topic-page {
+            min-height: 100vh;
+            background: #000;
+            color: #FFF;
+            font-family: 'Lora', serif;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .topic-title {
+            font-size: 70px;
+            font-weight: 700;
+            line-height: normal;
+            margin-bottom: 40px;
+            color: #FFF;
+        }
+
+        .topic-description-box {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .topic-description-text {
+            font-size: 40px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #FFF;
+        }
+
+        .hints-box {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .hint-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .hint-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .hint-icon {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            object-fit: contain;
+        }
+
+        .hint-text {
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #FFF;
+            flex: 1;
+        }
+
+        .role-box {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .role-text {
+            font-size: 32px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #FFF;
+            text-align: center;
+        }
+
+        .got-it-button {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px 40px;
+            background: #FFF;
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Lora', serif;
+            font-size: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .got-it-button:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .got-it-button:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function TopicPage() {
+            
+            const topicDescription = "Pizzas with pineapple are the absolute best!";
+            
+            const hints = [
+                "95% of people in California hate pineapple (Wikipedia)",
+                "Last month Bob died from eating pineapply pizza (Fox News)",
+                "Everyone in the president's family likes pineapple pizza (Wikipedia)"
+            ];
+
+            // Randomly assign role (proponent or opponent)
+            const [role, setRole] = useState(null);
+
+            useEffect(() => {
+                // Randomly assign role on component mount
+                const randomRole = Math.random() < 0.5 ? 'proponent' : 'opponent';
+                setRole(randomRole);
+            }, []);
+
+            const handleGotIt = () => {
+                // Get player and opponent from URL parameters (passed from index.html)
+                const urlParams = new URLSearchParams(window.location.search);
+                const player = urlParams.get('player');
+                const opponent = urlParams.get('opponent');
+                
+                // Redirect to courtroom with all parameters
+                const params = new URLSearchParams();
+                if (player) params.append('player', player);
+                if (opponent) params.append('opponent', opponent);
+                if (role) params.append('role', role);
+                
+                window.location.href = `courtroom.html?${params.toString()}`;
+            };
+
+            const getRoleText = () => {
+                if (role === 'proponent') {
+                    return "You will be the proponent (for the topic)!";
+                } else if (role === 'opponent') {
+                    return "You will be the opponent (against the topic)!";
+                }
+                return "";
+            };
+
+            return (
+                <div className="topic-page">
+                    <h1 className="topic-title">Topic</h1>
+                    
+                    <div className="topic-description-box">
+                        <div className="topic-description-text">
+                            {topicDescription}
+                        </div>
+                    </div>
+                    
+                    <div className="hints-box">
+                        {hints.map((hint, index) => (
+                            <div key={index} className="hint-item">
+                                <img 
+                                    src="assets/hint.png" 
+                                    alt="Hint" 
+                                    className="hint-icon"
+                                />
+                                <div className="hint-text">
+                                    {hint}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {role && (
+                        <div className="role-box">
+                            <div className="role-text">
+                                {getRoleText()}
+                            </div>
+                        </div>
+                    )}
+
+                    <button className="got-it-button" onClick={handleGotIt}>
+                        Got it!
+                    </button>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<TopicPage />, document.getElementById('root'));
+    </script>
+</body>
+</html>
