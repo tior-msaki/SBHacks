@@ -42,9 +42,9 @@
             const recordingDurationRef = useRef(0);
 
             const avatarMap = {
-                'Berta': 'berta.jpg',
-                'Andrew': 'andrew.jpg',
-                'Sophia': 'sophia.jpg'
+                'Berta': 'assets/berta.jpg',
+                'Andrew': 'assets/andrew.jpg',
+                'Sophia': 'assets/sophia.jpg'
             };
 
             useEffect(() => {
@@ -377,13 +377,13 @@
             return (
                 <div className="courtroom-frame">
                     <div className="judge-container">
-                        <img src="judge.jpg" alt="Judge" className="judge-image" />
+                        <img src="assets/judge.jpg" alt="Judge" className="judge-image" />
                     </div>
                     
                     <div className="avatars-container">
                         <div className={`player-avatar-container ${transcriptPosition === 'opponent' ? 'no-transcript' : ''}`}>
                             <img 
-                                src={avatarMap[playerAvatar] || 'berta.jpg'} 
+                                src={avatarMap[playerAvatar] || 'assets/berta.jpg'} 
                                 alt="Player Avatar" 
                                 className="avatar-image" 
                             />
@@ -399,7 +399,7 @@
                                                 onClick={isRecording ? handleStopRecording : handleStartRecording}
                                                 disabled={hasRecorded && !isRecording}
                                             >
-                                                <img src="sound_icon.jpg" alt="Record" className="sound-icon" />
+                                                <img src="assets/sound_icon.jpg" alt="Record" className="sound-icon" />
                                             </button>
                                             <div className="timer">{formatTime(timeRemaining)}</div>
                                         </>
@@ -417,7 +417,7 @@
                                 </div>
                             )}
                             <img 
-                                src={avatarMap[opponentAvatar] || 'berta.jpg'} 
+                                src={avatarMap[opponentAvatar] || 'assets/berta.jpg'} 
                                 alt="Opponent Avatar" 
                                 className="avatar-image" 
                             />
