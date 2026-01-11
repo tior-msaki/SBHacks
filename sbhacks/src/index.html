@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Player Registration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="frame">
+        <h1 class="welcome-text">Welcome!</h1>
+        
+        <form id="playerForm" class="player-form">
+            <div class="name-email-container">
+                <div class="form-group">
+                    <label for="playerName">Player Name</label>
+                    <input 
+                        type="text" 
+                        id="playerName" 
+                        name="playerName" 
+                        placeholder=""
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="playerEmail">Player Email</label>
+                    <input 
+                        type="email" 
+                        id="playerEmail" 
+                        name="playerEmail" 
+                        placeholder=""
+                        required
+                    >
+                </div>
+            </div>
+            
+            <div class="radio-groups-grid">
+                <div class="radio-group">
+                    <h3>Choose your avatar</h3>
+                    <div class="radio-options">
+                        <label class="radio-label">
+                            <input type="radio" name="option1" value="Berta: Middle-aged black lady" required>
+                            <span class="radio-circle">
+                                <img src="berta.jpg" alt="Berta">
+                            </span>
+                            <span class="radio-text">Berta</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="option1" value="Andrew: New grad male">
+                            <span class="radio-circle">
+                                <img src="andrew.jpg" alt="Andrew">
+                            </span>
+                            <span class="radio-text">Andrew</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="option1" value="Sophia:Young, corporate woman">
+                            <span class="radio-circle">
+                                <img src="sophia.jpg" alt="Sophia">
+                            </span>
+                            <span class="radio-text">Sophia</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="radio-group">
+                    <h3>Choose opponent avatar</h3>
+                    <div class="radio-options">
+                        <label class="radio-label">
+                            <input type="radio" name="option2" value="Berta: Middle-aged black lady" required>
+                            <span class="radio-circle">
+                                <img src="berta.jpg" alt="Berta">
+                            </span>
+                            <span class="radio-text">Berta</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="option2" value="Andrew: New grad male">
+                            <span class="radio-circle">
+                                <img src="andrew.jpg" alt="Andrew">
+                            </span>
+                            <span class="radio-text">Andrew</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="option2" value="Sophia:Young, corporate woman">
+                            <span class="radio-circle">
+                                <img src="sophia.jpg" alt="Sophia">
+                            </span>
+                            <span class="radio-text">Sophia</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="radio-group difficulty-group">
+                    <h3>Difficulty Level</h3>
+                    <div class="radio-options">
+                        <label class="radio-label difficulty-label">
+                            <input type="radio" name="option3" value="Easy" required>
+                            <span class="radio-text">Easy</span>
+                        </label>
+                        <label class="radio-label difficulty-label">
+                            <input type="radio" name="option3" value="Medium">
+                            <span class="radio-text">Medium</span>
+                        </label>
+                        <label class="radio-label difficulty-label">
+                            <input type="radio" name="option3" value="Hard">
+                            <span class="radio-text">Hard</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+        
+        <div id="successMessage" class="success-message hidden">
+            <p>Form submitted successfully!</p>
+            <p id="submittedData"></p>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
