@@ -6,27 +6,28 @@ load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY") 
 SEARCH_ENGINE_ID = os.getenv("SEARCH_ENGINE_ID")
 
+def search(query):
+    GOOGLE_URL = ""f"https://www.googleapis.com/customsearch/v1"
+    params = {
+        "key": GOOGLE_API_KEY,
+        "cx": SEARCH_ENGINE_ID,
+        "q": query,
+        "num": 5
+    }
 
-search_query = "neural nine books"
-url = ""f"https://www.googleapis.com/customsearch/v1"
-params = {
-    "key": GOOGLE_API_KEY,
-    "cx": SEARCH_ENGINE_ID,
-    "q": search_query,
-    "num": 5
-}
+    response = requests.get(GOOGLE_URL, params=params)
+    search_results = response.json()
+    content = ""
 
-response = requests.get(url, params=params)
-results = response.json()
-
-for item in results:
-    url = item["items"]["link"]
-    response = requests.get(url, params=params)
-    results = response.json()
+    urls = []
+    for item in search_results["items"]:
+        urls += item["link"]
+    return urls
+        
+        
 
 
-
-# 200 is the HTTP status code for a successful request
-# if response.status_code == 200:
-#     if 'items' in result 
+    
+if __name__ == "__main__":
+    print(search("news"))
     
