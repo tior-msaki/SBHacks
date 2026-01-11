@@ -1,41 +1,42 @@
-// src/Router.jsx
-import React, { useState } from 'react';
-import HomeScreen from './components/HomeScreen';
-import TopicScreen from './components/TopicScreen';
-import DebateScreen from './components/DebateScreen';
-import ResultScreen from './components/ResultScreen';
+import { useState, useEffect } from 'react';
+import Welcome from './components/Welcome';
+import Topic from './components/Topic';
+import Courtroom from './components/Courtroom';
+import Win from './components/Win';
+import Lose from './components/Lose';
 
-const Router = () => {
-  const [currentScreen, setCurrentScreen] = useState('home');
-  const [gameState, setGameState] = useState({
-    username: '',
-    difficulty: 'easy',
-    userAvatar: null,
-    opponentAvatar: null,
-    topic: '',
-    userArgument: '',
-    opponentArgument: '',
-    winner: null,
-    feedback: ''
-  });
+function Router() {
+  const [currentPage, setCurrentPage] = useState('welcome');
+  const [pageData, setPageData] = useState({});
 
-  const navigateTo = (screen, newState = {}) => {
-    setGameState(prev => ({ ...prev, ...newState }));
-    setCurrentScreen(screen);
+  const navigate = (page, data = {}) => {
+    setPageData(data);
+    setCurrentPage(page);
   };
 
-  const screens = {
-    home: <HomeScreen onNext={navigateTo} gameState={gameState} />,
-    topic: <TopicScreen onNext={navigateTo} gameState={gameState} />,
-    debate: <DebateScreen onNext={navigateTo} gameState={gameState} />,
-    result: <ResultScreen onNext={navigateTo} gameState={gameState} />
-  };
+  useEffect(() => {
+    // Handle browser back/forward
+    const handlePopState = () => {
+      // Could implement history management here if needed
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-      {screens[currentScreen]}
-    </div>
-  );
-};
+  switch (currentPage) {
+    case 'welcome':
+      return <Welcome onNavigate={navigate} />;
+    case 'topic':
+      return <Topic onNavigate={navigate} data={pageData} />;
+    case 'courtroom':
+      return <Courtroom onNavigate={navigate} data={pageData} />;
+    case 'win':
+      return <Win onNavigate={navigate} data={pageData} />;
+    case 'lose':
+      return <Lose onNavigate={navigate} data={pageData} />;
+    default:
+      return <Welcome onNavigate={navigate} />;
+  }
+}
 
 export default Router;
