@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courtroom - Recording</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="courtroom-body">
+    <div class="courtroom-frame">
+        <div class="judge-container">
+            <img src="judge.jpg" alt="Judge" class="judge-image">
+        </div>
+        
+        <div class="avatars-container">
+            <div class="player-avatar-container">
+                <img id="playerAvatarImg" src="" alt="Player Avatar" class="avatar-image">
+                <div class="transcript-wrapper">
+                    <div class="transcript-box">
+                        <div id="transcript" class="transcript-text"></div>
+                    </div>
+                    <button id="recordButton" class="record-button">
+                        <img src="sound_icon.jpg" alt="Record" class="sound-icon">
+                    </button>
+                    <div id="timer" class="timer">1:00</div>
+                </div>
+            </div>
+            
+            <div class="opponent-avatar-container">
+                <img id="opponentAvatarImg" src="" alt="Opponent Avatar" class="avatar-image">
+            </div>
+        </div>
+    </div>
+    
+    <script src="courtroom.js"></script>
+</body>
+</html>
