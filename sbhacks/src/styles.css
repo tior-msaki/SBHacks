@@ -412,7 +412,7 @@ body.win-body {
 .courtroom-frame {
     width: 100vw;
     height: 100vh;
-    background-image: url('courtroom.jpg');
+    background-image: url('assets/courtroom.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -456,6 +456,17 @@ body.win-body {
 }
 
 .player-avatar-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.player-avatar-container.no-transcript {
+    align-items: flex-end;
+}
+
+.opponent-avatar-container.has-transcript {
     display: flex;
     flex-direction: row;
     align-items: center;
