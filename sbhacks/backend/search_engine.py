@@ -21,7 +21,7 @@ def search(query):
 
     urls = []
     for item in search_results["items"]:
-        urls += item["link"]
+        urls.append(item["link"])
     return urls
         
         

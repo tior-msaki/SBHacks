@@ -33,6 +33,11 @@ def create_user_profile(username, difficulty, level, avatar):
 
     return user_data
 
+def get_difficulty(username):
+    user = profiles_collection.find_one({"username": username})
+    return user['difficulty']
+
+
 def insert_user(profile_data):
     try:
         result = profiles_collection.insert_one(profile_data)
