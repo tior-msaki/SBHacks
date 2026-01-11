@@ -6,121 +6,249 @@
     <title>Welcome - Player Registration</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
-    <div class="frame">
-        <h1 class="welcome-text">Welcome!</h1>
-        
-        <form id="playerForm" class="player-form">
-            <div class="name-email-container">
-                <div class="form-group">
-                    <label for="playerName">Player Name</label>
-                    <input 
-                        type="text" 
-                        id="playerName" 
-                        name="playerName" 
-                        placeholder=""
-                        required
-                    >
-                </div>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        function getCharacterName(value) {
+            if (!value) return null;
+            const colonIndex = value.indexOf(':');
+            return colonIndex > 0 ? value.substring(0, colonIndex).trim() : value.trim();
+        }
+
+        function PlayerForm() {
+            const [playerName, setPlayerName] = useState('');
+            const [playerEmail, setPlayerEmail] = useState('');
+            const [playerAvatar, setPlayerAvatar] = useState('');
+            const [opponentAvatar, setOpponentAvatar] = useState('');
+            const [difficulty, setDifficulty] = useState('');
+            const [nameBorderColor, setNameBorderColor] = useState('#e0e0e0');
+            const [emailBorderColor, setEmailBorderColor] = useState('#e0e0e0');
+            const [disabledOptions, setDisabledOptions] = useState({ player: [], opponent: [] });
+
+            const avatarOptions = [
+                { value: 'Berta: Middle-aged black lady', label: 'Berta', image: './assets/berta.jpg' },
+                { value: 'Andrew: New grad male', label: 'Andrew', image: './assets/andrew.jpg' },
+                { value: 'Sophia:Young, corporate woman', label: 'Sophia', image: './assets/sophia.jpg' }
+            ];
+
+            const difficultyOptions = ['Easy', 'Medium', 'Hard'];
+
+            useEffect(() => {
+                updateDisabledStates();
+            }, [playerAvatar, opponentAvatar]);
+
+            const updateDisabledStates = () => {
+                const playerChar = getCharacterName(playerAvatar);
+                const opponentChar = getCharacterName(opponentAvatar);
                 
-                <div class="form-group">
-                    <label for="playerEmail">Player Email</label>
-                    <input 
-                        type="email" 
-                        id="playerEmail" 
-                        name="playerEmail" 
-                        placeholder=""
-                        required
-                    >
-                </div>
-            </div>
-            
-            <div class="radio-groups-grid">
-                <div class="radio-group">
-                    <h3>Choose your avatar</h3>
-                    <div class="radio-options">
-                        <label class="radio-label">
-                            <input type="radio" name="option1" value="Berta: Middle-aged black lady" required>
-                            <span class="radio-circle">
-                                <img src="berta.jpg" alt="Berta">
-                            </span>
-                            <span class="radio-text">Berta</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="option1" value="Andrew: New grad male">
-                            <span class="radio-circle">
-                                <img src="andrew.jpg" alt="Andrew">
-                            </span>
-                            <span class="radio-text">Andrew</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="option1" value="Sophia:Young, corporate woman">
-                            <span class="radio-circle">
-                                <img src="sophia.jpg" alt="Sophia">
-                            </span>
-                            <span class="radio-text">Sophia</span>
-                        </label>
-                    </div>
-                </div>
+                const newDisabled = { player: [], opponent: [] };
                 
-                <div class="radio-group">
-                    <h3>Choose opponent avatar</h3>
-                    <div class="radio-options">
-                        <label class="radio-label">
-                            <input type="radio" name="option2" value="Berta: Middle-aged black lady" required>
-                            <span class="radio-circle">
-                                <img src="berta.jpg" alt="Berta">
-                            </span>
-                            <span class="radio-text">Berta</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="option2" value="Andrew: New grad male">
-                            <span class="radio-circle">
-                                <img src="andrew.jpg" alt="Andrew">
-                            </span>
-                            <span class="radio-text">Andrew</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="option2" value="Sophia:Young, corporate woman">
-                            <span class="radio-circle">
-                                <img src="sophia.jpg" alt="Sophia">
-                            </span>
-                            <span class="radio-text">Sophia</span>
-                        </label>
-                    </div>
-                </div>
+                if (playerChar && opponentChar && playerChar === opponentChar) {
+                    if (playerAvatar) {
+                        newDisabled.opponent.push(playerChar);
+                    }
+                    if (opponentAvatar) {
+                        newDisabled.player.push(opponentChar);
+                    }
+                } else {
+                    if (playerChar) {
+                        newDisabled.opponent.push(playerChar);
+                    }
+                    if (opponentChar) {
+                        newDisabled.player.push(opponentChar);
+                    }
+                }
                 
-                <div class="radio-group difficulty-group">
-                    <h3>Difficulty Level</h3>
-                    <div class="radio-options">
-                        <label class="radio-label difficulty-label">
-                            <input type="radio" name="option3" value="Easy" required>
-                            <span class="radio-text">Easy</span>
-                        </label>
-                        <label class="radio-label difficulty-label">
-                            <input type="radio" name="option3" value="Medium">
-                            <span class="radio-text">Medium</span>
-                        </label>
-                        <label class="radio-label difficulty-label">
-                            <input type="radio" name="option3" value="Hard">
-                            <span class="radio-text">Hard</span>
-                        </label>
-                    </div>
+                setDisabledOptions(newDisabled);
+            };
+
+            const handlePlayerAvatarChange = (value) => {
+                const charName = getCharacterName(value);
+                if (opponentAvatar && getCharacterName(opponentAvatar) === charName) {
+                    setOpponentAvatar('');
+                }
+                setPlayerAvatar(value);
+            };
+
+            const handleOpponentAvatarChange = (value) => {
+                const charName = getCharacterName(value);
+                if (playerAvatar && getCharacterName(playerAvatar) === charName) {
+                    setPlayerAvatar('');
+                }
+                setOpponentAvatar(value);
+            };
+
+            const handleNameBlur = () => {
+                setNameBorderColor(playerName.trim() === '' ? '#dc3545' : '#e0e0e0');
+            };
+
+            const handleEmailBlur = () => {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                setEmailBorderColor(
+                    playerEmail.trim() === '' || !emailRegex.test(playerEmail) ? '#dc3545' : '#e0e0e0'
+                );
+            };
+
+            const handleNameChange = (e) => {
+                setPlayerName(e.target.value);
+                setNameBorderColor('#e0e0e0');
+            };
+
+            const handleEmailChange = (e) => {
+                setPlayerEmail(e.target.value);
+                setEmailBorderColor('#e0e0e0');
+            };
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+
+                if (!playerName || !playerEmail || !playerAvatar || !opponentAvatar || !difficulty) {
+                    alert('Please fill in all fields and select an option from each set.');
+                    return;
+                }
+
+                const playerCharacterName = getCharacterName(playerAvatar);
+                const opponentCharacterName = getCharacterName(opponentAvatar);
+                
+                if (playerCharacterName === opponentCharacterName) {
+                    alert('You cannot select the same character for both player and opponent. Please choose different characters.');
+                    return;
+                }
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(playerEmail)) {
+                    alert('Please enter a valid email address.');
+                    return;
+                }
+
+                const playerCharacter = getCharacterName(playerAvatar);
+                const opponentCharacter = getCharacterName(opponentAvatar);
+                
+                window.location.href = `topic.html?player=${encodeURIComponent(playerCharacter)}&opponent=${encodeURIComponent(opponentCharacter)}`;
+            };
+
+            const isOptionDisabled = (group, value) => {
+                const charName = getCharacterName(value);
+                return disabledOptions[group].includes(charName);
+            };
+
+            return (
+                <div className="frame">
+                    <h1 className="welcome-text">Welcome!</h1>
+                    
+                    <form onSubmit={handleSubmit} className="player-form">
+                        <div className="name-email-container">
+                            <div className="form-group">
+                                <label htmlFor="playerName">Player Name</label>
+                                <input
+                                    type="text"
+                                    id="playerName"
+                                    value={playerName}
+                                    onChange={handleNameChange}
+                                    onBlur={handleNameBlur}
+                                    style={{ borderColor: nameBorderColor }}
+                                    placeholder=""
+                                    required
+                                />
+                            </div>
+                            
+                            <div className="form-group">
+                                <label htmlFor="playerEmail">Player Email</label>
+                                <input
+                                    type="email"
+                                    id="playerEmail"
+                                    value={playerEmail}
+                                    onChange={handleEmailChange}
+                                    onBlur={handleEmailBlur}
+                                    style={{ borderColor: emailBorderColor }}
+                                    placeholder=""
+                                    required
+                                />
+                            </div>
+                        </div>
+                        
+                        <div className="radio-groups-grid">
+                            <div className="radio-group">
+                                <h3>Choose your avatar</h3>
+                                <div className="radio-options">
+                                    {avatarOptions.map((option) => (
+                                        <label key={option.value} className="radio-label">
+                                            <input
+                                                type="radio"
+                                                name="option1"
+                                                value={option.value}
+                                                checked={playerAvatar === option.value}
+                                                onChange={(e) => handlePlayerAvatarChange(e.target.value)}
+                                                disabled={isOptionDisabled('player', option.value)}
+                                                required
+                                            />
+                                            <span className="radio-circle">
+                                                <img src={option.image} alt={option.label} />
+                                            </span>
+                                            <span className="radio-text">{option.label}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                            
+                            <div className="radio-group">
+                                <h3>Choose opponent avatar</h3>
+                                <div className="radio-options">
+                                    {avatarOptions.map((option) => (
+                                        <label key={option.value} className="radio-label">
+                                            <input
+                                                type="radio"
+                                                name="option2"
+                                                value={option.value}
+                                                checked={opponentAvatar === option.value}
+                                                onChange={(e) => handleOpponentAvatarChange(e.target.value)}
+                                                disabled={isOptionDisabled('opponent', option.value)}
+                                                required
+                                            />
+                                            <span className="radio-circle">
+                                                <img src={option.image} alt={option.label} />
+                                            </span>
+                                            <span className="radio-text">{option.label}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                            
+                            <div className="radio-group difficulty-group">
+                                <h3>Difficulty Level</h3>
+                                <div className="radio-options">
+                                    {difficultyOptions.map((option) => (
+                                        <label key={option} className="radio-label difficulty-label">
+                                            <input
+                                                type="radio"
+                                                name="option3"
+                                                value={option}
+                                                checked={difficulty === option}
+                                                onChange={(e) => setDifficulty(e.target.value)}
+                                                required
+                                            />
+                                            <span className="radio-text">{option}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" className="submit-btn">Submit</button>
+                    </form>
                 </div>
-            </div>
-            
-            <button type="submit" class="submit-btn">Submit</button>
-        </form>
-        
-        <div id="successMessage" class="success-message hidden">
-            <p>Form submitted successfully!</p>
-            <p id="submittedData"></p>
-        </div>
-    </div>
-    
-    <script src="script.js"></script>
+            );
+        }
+
+        ReactDOM.render(<PlayerForm />, document.getElementById('root'));
+    </script>
 </body>
 </html>
