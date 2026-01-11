@@ -1,0 +1,245 @@
+import { useState, useEffect } from 'react';
+import bertaImage from '../assets/berta.jpg';
+import andrewImage from '../assets/andrew.jpg';
+import sophiaImage from '../assets/sophia.jpg';
+import paperImage from '../assets/paper.jpg';
+import '../styles.css';
+
+function getCharacterName(value) {
+  if (!value) return null;
+  const colonIndex = value.indexOf(':');
+  return colonIndex > 0 ? value.substring(0, colonIndex).trim() : value.trim();
+}
+
+function Welcome({ onNavigate }) {
+  const [playerName, setPlayerName] = useState('');
+  const [playerEmail, setPlayerEmail] = useState('');
+  const [playerAvatar, setPlayerAvatar] = useState('');
+  const [opponentAvatar, setOpponentAvatar] = useState('');
+  const [difficulty, setDifficulty] = useState('');
+  const [nameBorderColor, setNameBorderColor] = useState('#e0e0e0');
+  const [emailBorderColor, setEmailBorderColor] = useState('#e0e0e0');
+  const [disabledOptions, setDisabledOptions] = useState({ player: [], opponent: [] });
+
+  const avatarOptions = [
+    { value: 'Berta: Middle-aged black lady', label: 'Berta', image: bertaImage },
+    { value: 'Andrew: New grad male', label: 'Andrew', image: andrewImage },
+    { value: 'Sophia:Young, corporate woman', label: 'Sophia', image: sophiaImage }
+  ];
+
+  const difficultyOptions = ['Easy', 'Medium', 'Hard'];
+
+  useEffect(() => {
+    updateDisabledStates();
+  }, [playerAvatar, opponentAvatar]);
+
+  const updateDisabledStates = () => {
+    const playerChar = getCharacterName(playerAvatar);
+    const opponentChar = getCharacterName(opponentAvatar);
+    
+    const newDisabled = { player: [], opponent: [] };
+    
+    if (playerChar && opponentChar && playerChar === opponentChar) {
+      if (playerAvatar) {
+        newDisabled.opponent.push(playerChar);
+      }
+      if (opponentAvatar) {
+        newDisabled.player.push(opponentChar);
+      }
+    } else {
+      if (playerChar) {
+        newDisabled.opponent.push(playerChar);
+      }
+      if (opponentChar) {
+        newDisabled.player.push(opponentChar);
+      }
+    }
+    
+    setDisabledOptions(newDisabled);
+  };
+
+  const handlePlayerAvatarChange = (value) => {
+    const charName = getCharacterName(value);
+    if (opponentAvatar && getCharacterName(opponentAvatar) === charName) {
+      setOpponentAvatar('');
+    }
+    setPlayerAvatar(value);
+  };
+
+  const handleOpponentAvatarChange = (value) => {
+    const charName = getCharacterName(value);
+    if (playerAvatar && getCharacterName(playerAvatar) === charName) {
+      setPlayerAvatar('');
+    }
+    setOpponentAvatar(value);
+  };
+
+  const handleNameBlur = () => {
+    setNameBorderColor(playerName.trim() === '' ? '#dc3545' : '#e0e0e0');
+  };
+
+  const handleEmailBlur = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setEmailBorderColor(
+      playerEmail.trim() === '' || !emailRegex.test(playerEmail) ? '#dc3545' : '#e0e0e0'
+    );
+  };
+
+  const handleNameChange = (e) => {
+    setPlayerName(e.target.value);
+    setNameBorderColor('#e0e0e0');
+  };
+
+  const handleEmailChange = (e) => {
+    setPlayerEmail(e.target.value);
+    setEmailBorderColor('#e0e0e0');
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!playerName || !playerEmail || !playerAvatar || !opponentAvatar || !difficulty) {
+      alert('Please fill in all fields and select an option from each set.');
+      return;
+    }
+
+    const playerCharacterName = getCharacterName(playerAvatar);
+    const opponentCharacterName = getCharacterName(opponentAvatar);
+    
+    if (playerCharacterName === opponentCharacterName) {
+      alert('You cannot select the same character for both player and opponent. Please choose different characters.');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(playerEmail)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    const playerCharacter = getCharacterName(playerAvatar);
+    const opponentCharacter = getCharacterName(opponentAvatar);
+    
+    onNavigate('topic', {
+      player: playerCharacter,
+      opponent: opponentCharacter,
+      playerName,
+      playerEmail,
+      difficulty
+    });
+  };
+
+  const isOptionDisabled = (group, value) => {
+    const charName = getCharacterName(value);
+    return disabledOptions[group].includes(charName);
+  };
+
+  return (
+    <div className="frame" style={{ backgroundImage: `url(${paperImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <h1 className="welcome-text">Welcome!</h1>
+      
+      <form onSubmit={handleSubmit} className="player-form">
+        <div className="name-email-container">
+          <div className="form-group">
+            <label htmlFor="playerName">Player Name</label>
+            <input
+              type="text"
+              id="playerName"
+              value={playerName}
+              onChange={handleNameChange}
+              onBlur={handleNameBlur}
+              style={{ borderColor: nameBorderColor }}
+              placeholder=""
+              required
+            />
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="playerEmail">Player Email</label>
+            <input
+              type="email"
+              id="playerEmail"
+              value={playerEmail}
+              onChange={handleEmailChange}
+              onBlur={handleEmailBlur}
+              style={{ borderColor: emailBorderColor }}
+              placeholder=""
+              required
+            />
+          </div>
+        </div>
+        
+        <div className="radio-groups-grid">
+          <div className="radio-group">
+            <h3>Choose your avatar</h3>
+            <div className="radio-options">
+              {avatarOptions.map((option) => (
+                <label key={option.value} className="radio-label">
+                  <input
+                    type="radio"
+                    name="option1"
+                    value={option.value}
+                    checked={playerAvatar === option.value}
+                    onChange={(e) => handlePlayerAvatarChange(e.target.value)}
+                    disabled={isOptionDisabled('player', option.value)}
+                    required
+                  />
+                  <span className="radio-circle">
+                    <img src={option.image} alt={option.label} />
+                  </span>
+                  <span className="radio-text">{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          
+          <div className="radio-group">
+            <h3>Choose opponent avatar</h3>
+            <div className="radio-options">
+              {avatarOptions.map((option) => (
+                <label key={option.value} className="radio-label">
+                  <input
+                    type="radio"
+                    name="option2"
+                    value={option.value}
+                    checked={opponentAvatar === option.value}
+                    onChange={(e) => handleOpponentAvatarChange(e.target.value)}
+                    disabled={isOptionDisabled('opponent', option.value)}
+                    required
+                  />
+                  <span className="radio-circle">
+                    <img src={option.image} alt={option.label} />
+                  </span>
+                  <span className="radio-text">{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          
+          <div className="radio-group difficulty-group">
+            <h3>Difficulty Level</h3>
+            <div className="radio-options">
+              {difficultyOptions.map((option) => (
+                <label key={option} className="radio-label difficulty-label">
+                  <input
+                    type="radio"
+                    name="option3"
+                    value={option}
+                    checked={difficulty === option}
+                    onChange={(e) => setDifficulty(e.target.value)}
+                    required
+                  />
+                  <span className="radio-text">{option}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        <button type="submit" className="submit-btn">Submit</button>
+      </form>
+    </div>
+  );
+}
+
+export default Welcome;
