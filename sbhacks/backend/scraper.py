@@ -54,10 +54,13 @@ def process_html(session, url):
     soup = BeautifulSoup(response.text, 'html.parser')
     for tag in soup.find_all(['script', 'style', 'span', 'div']):
         tag.decompose()
-    text = soup.get_text(strip=True, separator=' ')
+    text = f"URL: {url}/n Content:"
+    text += str(soup.get_text(strip=True, separator=' '))
     return text
 
 if __name__ == "__main__":
     s = requests.Session() #reuse a session object
     print(process_html(s, html_doc))
     
+
+
