@@ -1,9 +1,16 @@
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 import sys
+import os 
+from dotenv import load_dotenv
 
-connection_string = (...) 
-client = MongoClient(connection_string)
+load_dotenv()
+
+CONNECTION_STRING1 = os.getenv("CONNECTION_STRING1")
+CONNECTION_STRING2 = os.getenv("CONNECTION_STRING2")
+
+CONNECTION_STRING = CONNECTION_STRING1 + CONNECTION_STRING2
+client = MongoClient(CONNECTION_STRING)
 
 db = client["user_db"]
 profiles_collection = db["user_profiles"]
